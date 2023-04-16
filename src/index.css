@@ -17,6 +17,10 @@
   -webkit-text-size-adjust: 100%;
 }
 
+body, p {
+  color: black;
+}
+
 a {
   font-weight: 500;
   color: #535353;

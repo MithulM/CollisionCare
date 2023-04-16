@@ -4,7 +4,16 @@ import './HomePage.css'
 import axios from 'axios'
 
 function HomePage() {
-    const [base64Encoded, setBase64Encoded] = useState("");
+    const [requirements, setRequirements] = useState([
+        [0, "type_severity_of_collision", false, ""],
+        [1, "injuries", false, ""],
+        [2, "vehicles_involved", true, ""],
+        [3, "damage_to_customers_car", false, ""],
+        [4, "location_of_damage", false, ""],
+        [5, "witnesses", false, ""],
+        [6, "police_called", false, ""],
+        [7, "car_is_drivable", false, ""]
+    ]);
 
     const clearCacheData = () => {
         caches.keys().then((names) => {
@@ -14,24 +23,43 @@ function HomePage() {
         });
     }
 
+    function updateRequirements(data) {
+        console.log(data);
+        let newReq = requirements.slice();
+        for (let i = 0; i < 8; i++) {
+            if (data[requirements[i][1]] !== "" && data[requirements[i][1]] !== "Not Applicable") {
+                requirements[i][2] = true;
+                requirements[i][3] = data["accident_info"][requirements[i][1]];
+            } else {
+                requirements[i][2] = false;
+            }
+        }
+        setRequirements(newReq);
+        console.log("Requirements: ");
+        console.log(requirements);
+    }
     async function sendAudio(base64Audio) {
         try {
             console.log("Sending audio to server: " + base64Audio);
-
-            const response = await axios.post('https://hackai-utd.herokuapp.com/process_audio', {
+            console.log("data going to send");
+            console.log(requirements);
+            const params = {
                 accident_info: {
-                    type_severity_of_collision: "",
-                    injuries: "",
-                    vehicles_involved: "",
-                    damage_to_customers_car: "",
-                    location_of_damage: "",
-                    witnesses: "",
-                    police_called: "",
-                    car_is_drivable: ""
+                    type_severity_of_collision: requirements[0][3],
+                    injuries: requirements[1][3],
+                    vehicles_involved: requirements[2][3],
+                    damage_to_customers_car: requirements[3][3],
+                    location_of_damage: requirements[4][3],
+                    witnesses: requirements[5][3],
+                    police_called: requirements[6][3],
+                    car_is_drivable: requirements[7][3]
                 },
                 audio_file: base64Audio
-            });
+            }
+            console.log(params);
+            const response = await axios.post('https://hackai-utd.herokuapp.com/process_audio', params);
             console.log(response.data);
+            updateRequirements(response.data);
             return response.data;
         } catch (err) {
             if (err.response) {
@@ -52,15 +80,13 @@ function HomePage() {
                 reader.readAsDataURL(blob);
                 reader.onloadend = () => {
                     const base64data = reader.result.substring(22);
-                    setBase64Encoded("None");
-                    setBase64Encoded(base64data);
+                    
                     sendAudio(base64data);
                 };
             });
     };
 
     const beginRecording = (startRecording) => () => {
-        clearCacheData();
         startRecording();
     }
 
@@ -68,17 +94,6 @@ function HomePage() {
         stopRecording();
         handleConvertToBase64(media);
     };
-
-    const requirements = [
-        [0, "type_severity_of_collision", false],
-        [1, "injuries", false],
-        [2, "vehicles_involved", true],
-        [3, "damage_to_customers_car", false],
-        [4, "location_of_damage", false],
-        [5, "witnesses", false],
-        [6, "police_called", false],
-        [7, "car_is_drivable", false]
-    ]
 
     return (
         <div className="mainInterface">
@@ -100,7 +115,6 @@ function HomePage() {
                         <p>{status}</p>
                         <audio src={mediaBlobUrl} controls></audio>
                     </div>
-
                 )
                 }
             />
