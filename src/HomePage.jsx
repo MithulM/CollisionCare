@@ -5,32 +5,33 @@ import axios from 'axios'
 
 function HomePage() {
     const [requirements, setRequirements] = useState([
-        [0, "Type/Severity of Collision", false, ""],
-        [1, "Injuries", false, ""],
-        [2, "Vehicles Involved", false, ""],
-        [3, "Damage to Customers Car", false, ""],
-        [4, "Location of Damage", false, ""],
-        [5, "Witnesses", false, ""],
-        [6, "Police Called", false, ""],
-        [7, "Car is Drivable", false, ""]
+        [0, "Type/Severity of Collision", false, "", "type_severity_of_collision"],
+        [1, "Injuries", false, "", "injuries"],
+        [2, "Vehicles Involved", false, "", "vehicles_involved"],
+        [3, "Damage to Customers Car", false, "", "damage_to_customers_car"],
+        [4, "Location of Damage", false, "", "location_of_damage"],
+        [5, "Witnesses", false, "", "witnesses"],
+        [6, "Police Called", false, "", "police_called"],
+        [7, "Car is Drivable", false, "", "car_is_drivable"]
     ]);
 
     function updateRequirements(data) {
         console.log("Data: ")
         console.log(data);
+        console.log(data["accident_info"]);
+        console.log(data["accident_info"][requirements[0][4]]);
         let newReq = requirements.slice();
         let badArr = ["", "Not Applicable", "\"\""];
         for (let i = 0; i < 8; i++) {
-            console.log(data["accident_info"]);
-            if (badArr.includes(data["accident_info"][requirements[i]])) {
+            if (badArr.includes(data["accident_info"][requirements[i][4]])) {
                 requirements[i][2] = false;
             } else {
-                requirements[i][2] = !["", "Not Applicable", "\"\""].includes(data[requirements[i][1]]);
+                requirements[i][2] = !["", "Not Applicable", "\"\""].includes(data["accident_info"][requirements[i][4]]);
             }
-            requirements[i][3] = data["accident_info"][requirements[i][1]];
+            requirements[i][3] = data["accident_info"][requirements[i][4]];
         }
-        setRequirements(newReq);
         console.log("Requirements: ");
+        setRequirements(newReq);
         console.log(requirements);
     }
 
@@ -68,14 +69,14 @@ function HomePage() {
 
     function resetRequirements() {
         setRequirements([
-            [0, "Type/Severity of Collision", false, ""],
-            [1, "Injuries", false, ""],
-            [2, "Vehicles Involved", false, ""],
-            [3, "Damage to Customers_car", false, ""],
-            [4, "Location of Damage", false, ""],
-            [5, "Witnesses", false, ""],
-            [6, "Police Called", false, ""],
-            [7, "Car is Drivable", false, ""]
+            [0, "Type/Severity of Collision", false, "", "type_severity_of_collision"],
+            [1, "Injuries", false, "", "injuries"],
+            [2, "Vehicles Involved", false, "", "vehicles_involved"],
+            [3, "Damage to Customers Car", false, "", "damage_to_customers_car"],
+            [4, "Location of Damage", false, "", "location_of_damage"],
+            [5, "Witnesses", false, "", "witnesses"],
+            [6, "Police Called", false, "", "police_called"],
+            [7, "Car is Drivable", false, "", "car_is_drivable"]
         ]);
     }
 
@@ -107,7 +108,7 @@ function HomePage() {
                         key={item[0]}
                         className={"post " + (item[2] ? "postGood" : "postBad")}
                     >
-                        {item[1]}
+                        {item[1] + ": " + item[3]}
                     </div>
                 ))}
             </div>
