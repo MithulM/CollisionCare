@@ -72,7 +72,7 @@ function HomePage() {
     const requirements = [
         [0, "type_severity_of_collision", false],
         [1, "injuries", false],
-        [2, "vehicles_involved", false],
+        [2, "vehicles_involved", true],
         [3, "damage_to_customers_car", false],
         [4, "location_of_damage", false],
         [5, "witnesses", false],
@@ -84,8 +84,8 @@ function HomePage() {
         <div className="mainInterface">
             <div className="requirements">
                 {requirements.map((item) => (
-                    <div key={item[0]} className="post">
-                        {item[1] + item[2]}
+                    <div key={item[0]} className={"post " + ((item[2]) ? "postGood" : "postBad")}>
+                        {item[1]}
                     </div>))}
             </div>
             <ReactMediaRecorder

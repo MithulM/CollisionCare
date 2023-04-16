@@ -18,4 +18,18 @@
     font-weight: bold;
     z-index: 1;
     text-align: center;
+    gap: 10px;
+}
+
+.post {
+    border-radius: 20px;
+    padding: 3px;
+}
+
+.postGood {
+    background-color: green;
+}
+
+.postBad {
+    background-color: red;
 }
