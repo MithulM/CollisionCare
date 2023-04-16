@@ -1,13 +1,14 @@
 import './App.css'
 import HomePage from './HomePage'
 import CollisionCenter from './CollisionCenter'
+import logo from './assets/GEICO-logo.png'
 import { Routes, Route, Link } from 'react-router-dom'
 
 function App() {
   return (
     <div className="App">
       <div className="topBar">
-        GEICO
+        Header
       </div>
       <Routes>
         <Route path="/" element={<HomePage />} />
