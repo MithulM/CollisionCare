@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <div className="topBar">
-        Header
+        <img src={logo} alt="GEICO logo" className='logo' />
       </div>
       <Routes>
         <Route path="/" element={<HomePage />} />

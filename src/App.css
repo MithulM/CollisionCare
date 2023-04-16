@@ -8,6 +8,21 @@
 .topBar {
   background-color: #f2f2f2;
   flex: 1;
+  display: flex;
+  justify-content: center;
+  /* center horizontally */
+  align-items: center;
+  /* center vertically */
+}
+
+.topBar img {
+  max-width: 10%;
+  height: auto;
+}
+
+.logo {
+  width: 20px;
+  height: auto;
 }
 
 .mainInterface {
