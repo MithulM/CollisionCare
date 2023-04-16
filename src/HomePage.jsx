@@ -15,14 +15,6 @@ function HomePage() {
         [7, "car_is_drivable", false, ""]
     ]);
 
-    const clearCacheData = () => {
-        caches.keys().then((names) => {
-            names.forEach((name) => {
-                caches.delete(name);
-            });
-        });
-    }
-
     function updateRequirements(data) {
         console.log(data);
         let newReq = requirements.slice();
@@ -80,20 +72,16 @@ function HomePage() {
                 reader.readAsDataURL(blob);
                 reader.onloadend = () => {
                     const base64data = reader.result.substring(22);
-
                     sendAudio(base64data);
                 };
             });
     };
 
-    const beginRecording = (startRecording) => () => {
-        startRecording();
-    };
-
-    const endRecording = (mediaBlobUrl, stopRecording) => {
-        setRecording(false);
-        setMediaBlobUrl(mediaBlobUrl);
+    const endRecording = (media, stopRecording) => {
         stopRecording();
+        if (media) {
+            handleConvertToBase64(media);
+        }
     };
 
     return (
@@ -116,14 +104,14 @@ function HomePage() {
                         {["idle", "stopped"].includes(status) ? (
                             <button
                                 className="buttonIdle"
-                                onClick={() => beginRecording(startRecording)}
+                                onClick={startRecording}
                             >
                                 Start
                             </button>
                         ) : (
                             <button
                                 className="buttonRecording"
-                                onClick={() => endRecording(mediaBlobUrl, stopRecording)}
+                                onClick={endRecording(mediaBlobUrl, stopRecording)}
                             >
                                 Stop
                             </button>
