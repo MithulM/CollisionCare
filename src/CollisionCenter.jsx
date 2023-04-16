@@ -17,27 +17,44 @@ function CollisionCenter() {
         console.log(`Error: ${err.message}`);
       }
     }
+    const generateEmail = (name) => {
+      // Generate a fake email based on the collision center name
+      const domain = "example.com";
+      const email = name.replace(/\s+/g, '-').toLowerCase() + "@" + domain;
+      return email;
+    }
+
+    return (
+      <div className="mainInterface">
+        <h1>Collision Center</h1>
+        <ul className="collisionCenter">
+          <li>
+            <div className="title">Texas Collision Center</div>
+            <div className="description">
+              <img src="/assets/phone.jpg" alt="phone icon" className="icon" />
+              (469) 209-6356
+              <button className="emailButton">Email</button>
+            </div>
+          </li>
+          <li>
+            <div className="title">AutoNation Collision Center Plano</div>
+            <div className="description">
+              <img src="/assets/phone.jpg" alt="phone icon" className="icon" />
+              (972) 465-9587
+              <button className="emailButton">Email</button>
+            </div>
+          </li>
+          <li>
+            <div className="title">Park Place Bodywerks Plano</div>
+            <div className="description">
+              <img src="/assets/phone.jpg" alt="phone icon" className="icon" />
+              (469) 202-5584
+              <button className="emailButton">Email</button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    )
   }
 
-  return (
-    <div className="mainInterface">
-      <h1>Collision Center</h1>
-      <ul className="collisionCenter">
-        <li>
-          <div className="title">Collision Center 1</div>
-          <div className="description">Description of Collision Center 1 goes here</div>
-        </li>
-        <li>
-          <div className="title">Collision Center 2</div>
-          <div className="description">Description of Collision Center 2 goes here</div>
-        </li>
-        <li>
-          <div className="title">Collision Center 3</div>
-          <div className="description">Description of Collision Center 3 goes here</div>
-        </li>
-      </ul>
-    </div>
-  )
-}
-
-export default CollisionCenter;
+  export default CollisionCenter;
