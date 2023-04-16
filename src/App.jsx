@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="App">
       <div className="topBar">
-        Header
+        GEICO
       </div>
       <Routes>
         <Route path="/" element={<HomePage />} />
