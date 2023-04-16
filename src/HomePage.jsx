@@ -7,7 +7,7 @@ function HomePage() {
     const [requirements, setRequirements] = useState([
         [0, "type_severity_of_collision", false, ""],
         [1, "injuries", false, ""],
-        [2, "vehicles_involved", true, ""],
+        [2, "vehicles_involved", false, ""],
         [3, "damage_to_customers_car", false, ""],
         [4, "location_of_damage", false, ""],
         [5, "witnesses", false, ""],
@@ -80,7 +80,7 @@ function HomePage() {
                 reader.readAsDataURL(blob);
                 reader.onloadend = () => {
                     const base64data = reader.result.substring(22);
-                    
+
                     sendAudio(base64data);
                 };
             });
@@ -88,37 +88,53 @@ function HomePage() {
 
     const beginRecording = (startRecording) => () => {
         startRecording();
-    }
+    };
 
-    const endRecording = (media, stopRecording) => () => {
+    const endRecording = (mediaBlobUrl, stopRecording) => {
+        setRecording(false);
+        setMediaBlobUrl(mediaBlobUrl);
         stopRecording();
-        handleConvertToBase64(media);
     };
 
     return (
         <div className="mainInterface">
             <div className="requirements">
                 {requirements.map((item) => (
-                    <div key={item[0]} className={"post " + ((item[2]) ? "postGood" : "postBad")}>
+                    <div
+                        key={item[0]}
+                        className={"post " + (item[2] ? "postGood" : "postBad")}
+                    >
                         {item[1]}
-                    </div>))}
+                    </div>
+                ))}
             </div>
+
             <ReactMediaRecorder
                 audio
                 render={({ status, startRecording, stopRecording, mediaBlobUrl }) => (
                     <div className="recordingArea">
-                        {
-                            (["idle", "stopped"].includes(status)) ?
-                                <button className="buttonIdle" onClick={beginRecording(startRecording)}>Start</button> :
-                                <button className="buttonRecording" onClick={endRecording(mediaBlobUrl, stopRecording)}>Stop</button>
-                        }
+                        {["idle", "stopped"].includes(status) ? (
+                            <button
+                                className="buttonIdle"
+                                onClick={() => beginRecording(startRecording)}
+                            >
+                                Start
+                            </button>
+                        ) : (
+                            <button
+                                className="buttonRecording"
+                                onClick={() => endRecording(mediaBlobUrl, stopRecording)}
+                            >
+                                Stop
+                            </button>
+                        )}
                         <p>{status}</p>
                         <audio src={mediaBlobUrl} controls></audio>
                     </div>
                 )
                 }
             />
-        </div >
+        </div>
     );
 }
 

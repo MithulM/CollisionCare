@@ -6,6 +6,15 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-top: 10px;
+}
+
+.mainInterface {
+    flex: 8;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
 button {
@@ -16,9 +25,11 @@ button {
     color: rgb(255, 255, 255);
     display: flex;
     position: sticky;
-    top: 0;
+    top: 40px;
+    left: 0;
+    right: 0;
     padding: 10px;
-    margin: 0;
+    margin: auto;
     font-weight: bold;
     z-index: 1;
     text-align: center;
@@ -33,10 +44,28 @@ button {
 }
 
 .postGood {
-    background-color: rgb(66, 213, 66);
+    background-color: rgb(57, 156, 222);
 }
 
 .postBad {
+    background-color: rgb(186, 186, 186);
+}
+
+.buttonIdle,
+.buttonRecording {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.buttonIdle {
+    background-color: green;
+}
+
+.buttonRecording {
     background-color: red;
 }
 
