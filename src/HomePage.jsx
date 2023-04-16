@@ -5,36 +5,37 @@ import axios from 'axios'
 
 function HomePage() {
     const [requirements, setRequirements] = useState([
-        [0, "type_severity_of_collision", false, ""],
-        [1, "injuries", false, ""],
-        [2, "vehicles_involved", false, ""],
-        [3, "damage_to_customers_car", false, ""],
-        [4, "location_of_damage", false, ""],
-        [5, "witnesses", false, ""],
-        [6, "police_called", false, ""],
-        [7, "car_is_drivable", false, ""]
+        [0, "Type/Severity of Collision", false, ""],
+        [1, "Injuries", false, ""],
+        [2, "Vehicles Involved", false, ""],
+        [3, "Damage to Customers Car", false, ""],
+        [4, "Location of Damage", false, ""],
+        [5, "Witnesses", false, ""],
+        [6, "Police Called", false, ""],
+        [7, "Car is Drivable", false, ""]
     ]);
 
     function updateRequirements(data) {
+        console.log("Data: ")
         console.log(data);
         let newReq = requirements.slice();
+        let badArr = ["", "Not Applicable", "\"\""];
         for (let i = 0; i < 8; i++) {
-            if (data[requirements[i][1]] !== "" && data[requirements[i][1]] !== "Not Applicable") {
-                requirements[i][2] = true;
-                requirements[i][3] = data["accident_info"][requirements[i][1]];
-            } else {
+            console.log(data["accident_info"]);
+            if (badArr.includes(data["accident_info"][requirements[i]])) {
                 requirements[i][2] = false;
+            } else {
+                requirements[i][2] = !["", "Not Applicable", "\"\""].includes(data[requirements[i][1]]);
             }
+            requirements[i][3] = data["accident_info"][requirements[i][1]];
         }
         setRequirements(newReq);
         console.log("Requirements: ");
         console.log(requirements);
     }
+
     async function sendAudio(base64Audio) {
         try {
-            console.log("Sending audio to server: " + base64Audio);
-            console.log("data going to send");
-            console.log(requirements);
             const params = {
                 accident_info: {
                     type_severity_of_collision: requirements[0][3],
@@ -49,6 +50,7 @@ function HomePage() {
                 audio_file: base64Audio
             }
             console.log(params);
+            console.log("Sending post");
             const response = await axios.post('https://hackai-utd.herokuapp.com/process_audio', params);
             console.log(response.data);
             updateRequirements(response.data);
@@ -62,6 +64,19 @@ function HomePage() {
                 console.log(`Error: ${err.message}`);
             }
         }
+    }
+
+    function resetRequirements() {
+        setRequirements([
+            [0, "Type/Severity of Collision", false, ""],
+            [1, "Injuries", false, ""],
+            [2, "Vehicles Involved", false, ""],
+            [3, "Damage to Customers_car", false, ""],
+            [4, "Location of Damage", false, ""],
+            [5, "Witnesses", false, ""],
+            [6, "Police Called", false, ""],
+            [7, "Car is Drivable", false, ""]
+        ]);
     }
 
     const handleConvertToBase64 = (mediaBlobUrl) => {
@@ -79,7 +94,7 @@ function HomePage() {
 
     const endRecording = (media, stopRecording) => {
         stopRecording();
-        if (media) {
+        if (media && media !== "") {
             handleConvertToBase64(media);
         }
     };
@@ -101,21 +116,30 @@ function HomePage() {
                 audio
                 render={({ status, startRecording, stopRecording, mediaBlobUrl }) => (
                     <div className="recordingArea">
-                        {["idle", "stopped"].includes(status) ? (
-                            <button
-                                className="buttonIdle"
-                                onClick={startRecording}
-                            >
-                                Start
-                            </button>
-                        ) : (
-                            <button
-                                className="buttonRecording"
-                                onClick={endRecording(mediaBlobUrl, stopRecording)}
-                            >
-                                Stop
-                            </button>
-                        )}
+                        <div>
+                            <span>
+                                {["idle", "stopped"].includes(status) ? (
+                                    <button
+                                        className="buttonIdle"
+                                        onClick={startRecording}
+                                    >
+                                        Start
+                                    </button>
+                                ) : (
+                                    <button
+                                        className="buttonRecording"
+                                        onClick={() => endRecording(mediaBlobUrl, stopRecording)}
+                                    >
+                                        Stop
+                                    </button>
+                                )}
+                            </span>
+                            <span className="buttonIdle buttonReset">
+                                <button onClick={resetRequirements}>
+                                    Reset info
+                                </button>
+                            </span>
+                        </div>
                         <p>{status}</p>
                         <audio src={mediaBlobUrl} controls></audio>
                     </div>
