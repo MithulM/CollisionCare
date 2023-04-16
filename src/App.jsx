@@ -15,7 +15,7 @@ function App() {
       </Routes>
       <div className='footer'>
         <Link to="/" className="pageswap">
-          Home
+          <a href="https://www.flaticon.com/free-icons/home-button" title="home button icons">Home</a>
         </Link>
         <Link to="/collisioncenter" className="pageswap">
           Collision Centers
