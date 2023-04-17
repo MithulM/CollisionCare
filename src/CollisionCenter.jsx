@@ -7,6 +7,7 @@ function CollisionCenter() {
     try {
       const response = await axios.get('https://hackai-utd.herokuapp.com/get_email/210002');
       console.log(response.data);
+      navigator.clipboard.writeText(response.data);
       return response.data;
     } catch (err) {
       if (err.response) {
@@ -34,7 +35,7 @@ function CollisionCenter() {
           <div className="description">
             <img src="/assets/phone.jpg" alt="phone icon" className="icon" />
             (469) 209-6356
-            <button className="emailButton">Email</button>
+            <button onClick={getEmail} className="emailButton">Email</button>
           </div>
         </li>
         <li>
@@ -42,7 +43,7 @@ function CollisionCenter() {
           <div className="description">
             <img src="/assets/phone.jpg" alt="phone icon" className="icon" />
             (972) 465-9587
-            <button className="emailButton">Email</button>
+            <button onClick={getEmail} className="emailButton">Email</button>
           </div>
         </li>
         <li>
@@ -50,7 +51,7 @@ function CollisionCenter() {
           <div className="description">
             <img src="/assets/phone.jpg" alt="phone icon" className="icon" />
             (469) 202-5584
-            <button className="emailButton">Email</button>
+            <button onClick={getEmail} className="emailButton">Email</button>
           </div>
         </li>
       </ul>

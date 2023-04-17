@@ -137,7 +137,7 @@ function HomePage() {
                             </span>
                             <span className="buttonIdle buttonReset">
                                 <button onClick={resetRequirements}>
-                                    Reset info
+                                    Publish Info
                                 </button>
                             </span>
                         </div>
